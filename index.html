@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arathi's Portfolio | Computer Science Student & Aspiring Full-Stack Developer</title>
+  <meta name="description" content="Personal portfolio of Arathi, a Computer Science student at Amal Jyothi College of Engineering and an aspiring Full-Stack Developer." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>" />
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Floating Background Decorative Elements (Soft Pastel Glows) -->
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div id="toast" class="toast" role="alert" aria-live="polite">
+    <span class="toast-icon">✨</span>
+    <span id="toast-message">Message sent successfully!</span>
+  </div>
+
+  <!-- STICKY NAVIGATION BAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      
+      <!-- Logo -->
+      <a href="#home" class="nav-logo">
+        <span class="logo-mark">A</span>
+        <span class="logo-text">Arathi<span class="dot">.</span></span>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-links" id="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#workshops" class="nav-link">Workshops</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Right Header CTA -->
+      <div class="nav-cta-wrap">
+        <a href="#contact" class="btn btn-sm btn-gradient">Get In Touch</a>
+        
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#home" class="mobile-link">Home</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#education" class="mobile-link">Education</a>
+      <a href="#skills" class="mobile-link">Skills</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#workshops" class="mobile-link">Workshops</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. HOME / HERO SECTION -->
+    <section id="home" class="hero-section">
+      <div class="container hero-container">
+        
+        <!-- Left Content -->
+        <div class="hero-content reveal">
+          
+          <div class="status-pill">
+            <span class="pulsing-dot"></span>
+            <span>Welcome to my digital space</span>
+          </div>
+
+          <h1 class="hero-title">
+            Hi, I'm <span class="gradient-text">Arathi</span>
+          </h1>
+
+          <!-- Dynamic Typing Animation Subtitle -->
+          <div class="hero-subtitle-wrapper">
+            <span class="typing-prefix">I am a </span>
+            <span class="typing-text" id="typing-text"></span>
+            <span class="typing-cursor">|</span>
+          </div>
+
+          <p class="hero-description">
+            Passionate Computer Science student on an exciting journey to build creative software, explore cutting-edge technologies, and grow into a versatile Full-Stack Developer.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary btn-gradient">
+              <span>Explore My Work</span>
+              <span class="arrow-icon">→</span>
+            </a>
+            <a href="#contact" class="btn btn-glass">
+              <span>Contact Me</span>
+            </a>
+          </div>
+
+          <!-- Quick Info Badges -->
+          <div class="hero-badges">
+            <div class="badge-item">
+              <span class="badge-icon">🎓</span>
+              <span class="badge-text">B.Tech CS • 2026</span>
+            </div>
+            <div class="badge-item">
+              <span class="badge-icon">📍</span>
+              <span class="badge-text">Kerala, India</span>
+            </div>
+            <div class="badge-item">
+              <span class="badge-icon">💡</span>
+              <span class="badge-text">Aspiring Full-Stack Developer</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Profile Visual Card -->
+        <div class="hero-visual reveal">
+          <div class="profile-card-wrapper">
+            
+            <div class="profile-glow-ring"></div>
+            
+            <div class="profile-card glass-panel">
+              <!-- Profile Photo -->
+              <div class="profile-photo-container">
+                <img 
+                  id="profile-img" 
+                  src="profile.jpg" 
+                  alt="Arathi - Computer Science Student & Aspiring Full-Stack Developer" 
+                  class="profile-photo"
+                />
+                <div class="photo-overlay-tag">
+                  <span>Student &amp; Developer</span>
+                </div>
+              </div>
+
+              <!-- Floating Micro-Badges -->
+              <div class="floating-chip chip-top-left glass-card">
+                <span class="chip-emoji">💻</span>
+                <div class="chip-content">
+                  <span class="chip-label">Coding Passion</span>
+                  <span class="chip-sub">C • Web • Python</span>
+                </div>
+              </div>
+
+              <div class="floating-chip chip-bottom-right glass-card">
+                <span class="chip-emoji">🚀</span>
+                <div class="chip-content">
+                  <span class="chip-label">Career Ambition</span>
+                  <span class="chip-sub">Full-Stack Dev</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. ABOUT ME SECTION -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">Get to know me</span>
+          <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+          <p class="section-subtitle">A glimpse into who I am, what drives my curiosity, and what I aspire to achieve.</p>
+        </div>
+
+        <div class="about-grid">
+          
+          <!-- Core Narrative Card -->
+          <div class="about-narrative-card glass-card reveal">
+            <div class="quote-icon">“</div>
+            <p class="core-quote">
+              I'm a Computer Science student passionate about technology, programming, and building creative solutions. I enjoy learning new technologies and developing my skills to become a successful software developer.
+            </p>
+            
+            <div class="about-paragraphs">
+              <p>
+                My journey in technology began with curiosity about how lines of code translate into interactive digital experiences. Whether it's understanding foundational algorithms in C, styling responsive interfaces with HTML &amp; CSS, or scripting logic in JavaScript and Python, I find genuine joy in problem solving.
+              </p>
+              <p>
+                As a student, I believe in consistent learning, proactive experimentation, and embracing challenges as stepping stones. I am eager to apply my academic foundation to practical projects and collaborate with like-minded creators.
+              </p>
+            </div>
+          </div>
+
+          <!-- Highlight Cards Column -->
+          <div class="about-highlights-col">
+            
+            <div class="highlight-card glass-card reveal">
+              <div class="highlight-icon-box pink">💡</div>
+              <div>
+                <h3 class="highlight-title">Eagerness to Learn</h3>
+                <p class="highlight-desc">Always curious to explore modern frameworks, development tools, and best coding practices.</p>
+              </div>
+            </div>
+
+            <div class="highlight-card glass-card reveal">
+              <div class="highlight-icon-box purple">🧩</div>
+              <div>
+                <h3 class="highlight-title">Analytical Mindset</h3>
+                <p class="highlight-desc">Approaching problems logically, breaking them down into clear, structured, and manageable steps.</p>
+              </div>
+            </div>
+
+            <div class="highlight-card glass-card reveal">
+              <div class="highlight-icon-box lavender">🎨</div>
+              <div>
+                <h3 class="highlight-title">Creative Solutions</h3>
+                <p class="highlight-desc">Passionate about combining functional coding logic with elegant, intuitive user interfaces.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. EDUCATION SECTION -->
+    <section id="education" class="section education-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">Academic Journey</span>
+          <h2 class="section-title">My <span class="gradient-text">Education</span></h2>
+          <p class="section-subtitle">The academic foundation supporting my engineering journey.</p>
+        </div>
+
+        <div class="education-card-wrapper reveal">
+          <div class="education-card glass-card">
+            
+            <div class="education-badge">
+              <span class="edu-year">Batch of 2026</span>
+            </div>
+
+            <div class="education-header">
+              <div class="college-icon-box">🏛️</div>
+              <div class="college-info">
+                <h3 class="degree-title">B.Tech in Computer Science &amp; Engineering</h3>
+                <h4 class="college-name">Amal Jyothi College of Engineering</h4>
+              </div>
+            </div>
+
+            <p class="education-description">
+              Currently pursuing my undergraduate engineering degree in Computer Science. The curriculum provides a strong ground in theoretical computation, data structures, algorithms, and hands-on software development principles.
+            </p>
+
+            <div class="edu-highlights-list">
+              <span class="edu-tag">Core CS Foundations</span>
+              <span class="edu-tag">Data Structures &amp; Algorithms</span>
+              <span class="edu-tag">Object-Oriented Programming</span>
+              <span class="edu-tag">Web Technologies</span>
+              <span class="edu-tag">Database Management</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. TECHNICAL SKILLS SECTION -->
+    <section id="skills" class="section skills-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">What I Know</span>
+          <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+          <p class="section-subtitle">Programming languages and core competencies I am actively learning and practicing.</p>
+        </div>
+
+        <!-- Visually Appealing Skills Grid (Easily customizable) -->
+        <div class="skills-grid">
+          
+          <!-- Skill 1: C Programming -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap c-lang">C</div>
+              <span class="skill-category">Core Language</span>
+            </div>
+            <h3 class="skill-name">C Programming</h3>
+            <p class="skill-desc">Understanding programming fundamentals, memory management, pointers, and structural logic.</p>
+            <div class="skill-pills">
+              <span>Data Types</span>
+              <span>Pointers</span>
+              <span>Structures</span>
+            </div>
+          </div>
+
+          <!-- Skill 2: HTML -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap html-lang">&lt;/&gt;</div>
+              <span class="skill-category">Frontend Base</span>
+            </div>
+            <h3 class="skill-name">HTML5</h3>
+            <p class="skill-desc">Structuring accessible, clean, and semantic web documents following standard best practices.</p>
+            <div class="skill-pills">
+              <span>Semantic Elements</span>
+              <span>Accessibility</span>
+              <span>Forms</span>
+            </div>
+          </div>
+
+          <!-- Skill 3: CSS -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap css-lang">🎨</div>
+              <span class="skill-category">Styling &amp; Design</span>
+            </div>
+            <h3 class="skill-name">CSS3</h3>
+            <p class="skill-desc">Crafting responsive layouts, glassmorphism, flexbox, grid systems, and smooth keyframe animations.</p>
+            <div class="skill-pills">
+              <span>Flexbox &amp; Grid</span>
+              <span>Animations</span>
+              <span>Responsive</span>
+            </div>
+          </div>
+
+          <!-- Skill 4: JavaScript -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap js-lang">JS</div>
+              <span class="skill-category">Web Logic</span>
+            </div>
+            <h3 class="skill-name">JavaScript</h3>
+            <p class="skill-desc">Implementing client-side interactivity, DOM manipulation, event handling, and ES6+ syntax.</p>
+            <div class="skill-pills">
+              <span>DOM Manipulation</span>
+              <span>Events</span>
+              <span>ES6+</span>
+            </div>
+          </div>
+
+          <!-- Skill 5: Python -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap py-lang">🐍</div>
+              <span class="skill-category">Scripting &amp; Logic</span>
+            </div>
+            <h3 class="skill-name">Python</h3>
+            <p class="skill-desc">Writing readable, modular scripts, working with built-in data structures, and foundational automation.</p>
+            <div class="skill-pills">
+              <span>Functions</span>
+              <span>OOP Basics</span>
+              <span>Scripting</span>
+            </div>
+          </div>
+
+          <!-- Skill 6: Problem Solving -->
+          <div class="skill-card glass-card reveal">
+            <div class="skill-top">
+              <div class="skill-icon-wrap solve-lang">🧠</div>
+              <span class="skill-category">Core Competency</span>
+            </div>
+            <h3 class="skill-name">Problem Solving</h3>
+            <p class="skill-desc">Deconstructing computational problems, tracing logic, writing algorithms, and debugging code.</p>
+            <div class="skill-pills">
+              <span>Algorithmic Thinking</span>
+              <span>Debugging</span>
+              <span>Logic</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. PROJECTS SHOWCASE SECTION -->
+    <section id="projects" class="section projects-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">Portfolio Showcase</span>
+          <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+          <p class="section-subtitle">Academic work, coding explorations, and future web development builds.</p>
+        </div>
+
+        <div class="projects-grid">
+          
+          <!-- Project 1: College Hackathon Project -->
+          <div class="project-card glass-card reveal">
+            <div class="project-card-header">
+              <span class="project-badge">Hackathon</span>
+              <span class="project-year">2026</span>
+            </div>
+            <div class="project-visual-preview preview-gradient-1">
+              <div class="project-icon-float">🏆</div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">College Hackathon Project</h3>
+              <p class="project-description">
+                A collaborative hackathon initiative developed during college events, focused on creating software prototypes that address real-world campus or student needs.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Problem Solving</span>
+                <span class="tag">Teamwork</span>
+                <span class="tag">Prototype</span>
+              </div>
+              <div class="project-links">
+                <a href="#contact" class="project-link-btn primary">
+                  <span>Learn More</span>
+                  <span class="link-arrow">→</span>
+                </a>
+                <a href="#contact" class="project-link-btn secondary">
+                  <span>GitHub Demo</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: Programming Projects -->
+          <div class="project-card glass-card reveal">
+            <div class="project-card-header">
+              <span class="project-badge">Programming</span>
+              <span class="project-year">Academic</span>
+            </div>
+            <div class="project-visual-preview preview-gradient-2">
+              <div class="project-icon-float">💻</div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">Programming &amp; Logic Projects</h3>
+              <p class="project-description">
+                Hands-on coding implementations in C and Python covering data structures, command-line utilities, sorting techniques, and algorithmic simulations.
+              </p>
+              <div class="project-tags">
+                <span class="tag">C</span>
+                <span class="tag">Python</span>
+                <span class="tag">Algorithms</span>
+              </div>
+              <div class="project-links">
+                <a href="#contact" class="project-link-btn primary">
+                  <span>View Repository</span>
+                  <span class="link-arrow">→</span>
+                </a>
+                <a href="#contact" class="project-link-btn secondary">
+                  <span>Source Code</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3: Personal Portfolio Website -->
+          <div class="project-card glass-card reveal">
+            <div class="project-card-header">
+              <span class="project-badge">Web Design</span>
+              <span class="project-year">Featured</span>
+            </div>
+            <div class="project-visual-preview preview-gradient-3">
+              <div class="project-icon-float">✨</div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">Personal Portfolio Website</h3>
+              <p class="project-description">
+                A responsive, aesthetic portfolio crafted with HTML5, CSS3, and JavaScript, featuring smooth typing animations, glassmorphism UI, and pastel gradients.
+              </p>
+              <div class="project-tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">JavaScript</span>
+              </div>
+              <div class="project-links">
+                <a href="#home" class="project-link-btn primary">
+                  <span>Live Preview</span>
+                  <span class="link-arrow">→</span>
+                </a>
+                <a href="#contact" class="project-link-btn secondary">
+                  <span>Details</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4: Future Web Development Projects -->
+          <div class="project-card glass-card reveal">
+            <div class="project-card-header">
+              <span class="project-badge coming-soon">In Development</span>
+              <span class="project-year">Upcoming</span>
+            </div>
+            <div class="project-visual-preview preview-gradient-4">
+              <div class="project-icon-float">🚀</div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">Future Web Development Projects</h3>
+              <p class="project-description">
+                Upcoming full-stack web applications connecting modern frontends with backend APIs and database systems, exploring end-to-end development.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Full-Stack</span>
+                <span class="tag">APIs</span>
+                <span class="tag">Database</span>
+              </div>
+              <div class="project-links">
+                <a href="#contact" class="project-link-btn primary">
+                  <span>Stay Tuned</span>
+                  <span class="link-arrow">→</span>
+                </a>
+                <a href="#contact" class="project-link-btn secondary">
+                  <span>Roadmap</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. WORKSHOPS & ACTIVITIES SECTION -->
+    <section id="workshops" class="section workshops-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">Campus Engagement</span>
+          <h2 class="section-title">Workshops &amp; <span class="gradient-text">Activities</span></h2>
+          <p class="section-subtitle">Engaging with the tech community through technical workshops and collegiate events.</p>
+        </div>
+
+        <div class="workshops-list">
+          
+          <div class="workshop-item glass-card reveal">
+            <div class="workshop-icon">🛠️</div>
+            <div class="workshop-info">
+              <div class="workshop-meta">
+                <span class="workshop-badge">Technical Workshop</span>
+                <span class="workshop-date">Amal Jyothi College</span>
+              </div>
+              <h3 class="workshop-title">Hands-On Web Development Sessions</h3>
+              <p class="workshop-desc">
+                Actively participated in college-organized technical workshops exploring web fundamentals, modern frontend workflows, and practical coding exercises.
+              </p>
+            </div>
+          </div>
+
+          <div class="workshop-item glass-card reveal">
+            <div class="workshop-icon">💡</div>
+            <div class="workshop-info">
+              <div class="workshop-meta">
+                <span class="workshop-badge">Tech Event</span>
+                <span class="workshop-date">College Activity</span>
+              </div>
+              <h3 class="workshop-title">Coding Contests &amp; Hackathons</h3>
+              <p class="workshop-desc">
+                Engaged in coding challenges and ideation events, collaborating with peers to brainstorm solutions and practice algorithmic problem solving under time constraints.
+              </p>
+            </div>
+          </div>
+
+          <div class="workshop-item glass-card reveal">
+            <div class="workshop-icon">👥</div>
+            <div class="workshop-info">
+              <div class="workshop-meta">
+                <span class="workshop-badge">Community</span>
+                <span class="workshop-date">Student Activity</span>
+              </div>
+              <h3 class="workshop-title">Department Technical Seminars</h3>
+              <p class="workshop-desc">
+                Attended expert talks and peer seminars covering emerging trends in software engineering, computing architectures, and developer career pathways.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. INTERESTS & CAREER GOAL SECTION -->
+    <section class="section interests-goals-section">
+      <div class="container">
+        
+        <!-- Interests Block -->
+        <div class="interests-block">
+          <div class="section-header reveal">
+            <span class="section-tag">What Drives Me</span>
+            <h2 class="section-title">My <span class="gradient-text">Interests</span></h2>
+            <p class="section-subtitle">Fields and activities I am deeply enthusiastic about pursuing.</p>
+          </div>
+
+          <div class="interests-grid">
+            <div class="interest-card glass-card reveal">
+              <span class="interest-emoji">💻</span>
+              <h3 class="interest-name">Coding &amp; Programming</h3>
+              <p class="interest-text">Writing clean, logical, and structured code to turn thoughts into functioning software.</p>
+            </div>
+
+            <div class="interest-card glass-card reveal">
+              <span class="interest-emoji">🚀</span>
+              <h3 class="interest-name">Exploring New Technologies</h3>
+              <p class="interest-text">Constantly discovering modern tools, frameworks, and trends shaping the developer ecosystem.</p>
+            </div>
+
+            <div class="interest-card glass-card reveal">
+              <span class="interest-emoji">🛠️</span>
+              <h3 class="interest-name">Software Development</h3>
+              <p class="interest-text">Understanding how scalable, robust applications are architected, developed, and maintained.</p>
+            </div>
+
+            <div class="interest-card glass-card reveal">
+              <span class="interest-emoji">💡</span>
+              <h3 class="interest-name">Building Creative Solutions</h3>
+              <p class="interest-text">Blending technical logic with aesthetic design to deliver delightful, impactful digital tools.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Career Goal Spotlight Banner -->
+        <div class="career-goal-banner glass-card reveal">
+          <div class="goal-icon-large">🎯</div>
+          <div class="goal-text-content">
+            <span class="goal-tag">Long-Term Ambition</span>
+            <h3 class="goal-title">My Career Goal: Becoming a Full-Stack Developer</h3>
+            <p class="goal-desc">
+              My aspiration is to master both frontend design and backend engineering. I want to build seamless, secure, and user-centric web applications from the ground up—transforming ideas into software that provides real value.
+            </p>
+          </div>
+          <a href="#contact" class="btn btn-primary btn-gradient goal-btn">Connect With Me</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8. CONTACT SECTION -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="section-tag">Say Hello</span>
+          <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+          <p class="section-subtitle">Feel free to reach out for collaborations, project discussions, or a friendly chat!</p>
+        </div>
+
+        <div class="contact-grid">
+          
+          <!-- Left: Contact Details & Social Placeholders -->
+          <div class="contact-info-col glass-card reveal">
+            <h3 class="contact-card-title">Let's Connect</h3>
+            <p class="contact-card-desc">
+              I am always happy to connect with fellow students, developers, and mentors. Drop a message or reach out via my profiles below!
+            </p>
+
+            <div class="contact-items-list">
+              
+              <!-- Email Placeholder -->
+              <div class="contact-item">
+                <div class="contact-item-icon">✉️</div>
+                <div class="contact-item-text">
+                  <span class="contact-label">Email</span>
+                  <a href="mailto:your.email@example.com" class="contact-link">your.email@example.com</a>
+                  <span class="placeholder-note">(Update with your email)</span>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="contact-item">
+                <div class="contact-item-icon">📍</div>
+                <div class="contact-item-text">
+                  <span class="contact-label">Location</span>
+                  <span class="contact-value">Amal Jyothi College, Kerala, India</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Social Media Placeholders -->
+            <div class="social-links-block">
+              <span class="social-heading">Connect on Social Platforms</span>
+              <div class="social-buttons">
+                <!-- LinkedIn Placeholder -->
+                <a 
+                  href="https://linkedin.com/in/your-profile" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="social-btn"
+                  title="LinkedIn Profile"
+                >
+                  <span class="social-icon">in</span>
+                  <span>LinkedIn</span>
+                </a>
+
+                <!-- GitHub Placeholder -->
+                <a 
+                  href="https://github.com/your-username" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="social-btn"
+                  title="GitHub Profile"
+                >
+                  <span class="social-icon">🐙</span>
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Interactive Contact Form -->
+          <div class="contact-form-col glass-card reveal">
+            <h3 class="contact-card-title">Send a Message</h3>
+            
+            <form id="contact-form" class="contact-form" novalidate>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name <span class="required">*</span></label>
+                  <input type="text" id="name" name="name" placeholder="e.g. Maya Sharma" required />
+                  <span class="error-msg" id="name-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Your Email <span class="required">*</span></label>
+                  <input type="email" id="email" name="email" placeholder="e.g. maya@example.com" required />
+                  <span class="error-msg" id="email-error"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject <span class="required">*</span></label>
+                <input type="text" id="subject" name="subject" placeholder="Project Discussion, Collaboration, or Greeting" required />
+                <span class="error-msg" id="subject-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message <span class="required">*</span></label>
+                <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                <span class="error-msg" id="message-error"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-gradient btn-block" id="submit-btn">
+                <span class="btn-text">Send Message</span>
+                <span class="btn-icon">✈️</span>
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <a href="#home" class="footer-logo">
+          <span class="logo-mark small">A</span>
+          <span>Arathi<span class="dot">.</span></span>
+        </a>
+        <p class="footer-text">
+          Computer Science Student • Amal Jyothi College of Engineering • Batch of 2026
+        </p>
+      </div>
+
+      <div class="footer-right">
+        <a href="#home" class="back-to-top-btn" title="Back to top">
+          <span>Back to top</span>
+          <span class="up-arrow">↑</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Arathi. Handcrafted with HTML, CSS &amp; JavaScript.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusFind — Amal Jyothi College Lost &amp; Found Portal</title>
+  <meta name="description" content="Official Lost and Found portal for Amal Jyothi College of Engineering (AJCE). Report lost belongings, upload found items, and verify ownership securely." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>" />
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Floating Toast Notification -->
+  <div id="toast" class="toast" role="alert" aria-live="polite">
+    <span class="toast-icon">✨</span>
+    <span id="toast-message">Notification message</span>
+  </div>
+
+  <!-- TOP CAMPUS ROLE & SYSTEM BAR -->
+  <div class="top-system-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-left">
+        <span class="campus-badge">AJCE Security Network</span>
+        <span class="top-bar-notice">Amal Jyothi College of Engineering • Official Lost &amp; Found System</span>
+      </div>
+      <div class="top-bar-right">
+        <span class="demo-label">Testing Role:</span>
+        <div class="role-selector-group">
+          <button onclick="switchRole('student')" class="role-btn active" id="role-btn-student">
+            <span>👤 Student (Arathi)</span>
+          </button>
+          <button onclick="switchRole('staff')" class="role-btn" id="role-btn-staff">
+            <span>👔 Staff (Prof. Thomas)</span>
+          </button>
+          <button onclick="switchRole('admin')" class="role-btn" id="role-btn-admin">
+            <span>🛡️ Security Admin</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN NAVIGATION HEADER -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" onclick="showView('feed')" class="nav-logo">
+        <div class="logo-badge">
+          <span class="logo-icon">🔍</span>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-title">Campus<span class="highlight">Find</span></span>
+          <span class="logo-subtitle">Amal Jyothi College of Engineering</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links">
+        <a href="javascript:void(0)" onclick="showView('feed')" class="nav-link active" id="nav-link-browse">Browse Directory</a>
+        <a href="javascript:void(0)" onclick="showView('user-dashboard')" class="nav-link" id="nav-link-user-dash">My Dashboard</a>
+        <a href="javascript:void(0)" onclick="showView('admin-dashboard')" class="nav-link admin-nav-link" id="nav-link-admin-dash" style="display: none;">
+          <span>Security Admin Console</span>
+          <span class="admin-badge-count" id="admin-pending-badge">0</span>
+        </a>
+        <a href="#hubs" class="nav-link">Security Hubs</a>
+        <a href="#faq" class="nav-link">Verification Rules</a>
+      </nav>
+
+      <!-- Action & Auth Navigation -->
+      <div class="nav-actions">
+        
+        <!-- Notifications Bell -->
+        <div class="notif-dropdown-wrapper">
+          <button onclick="toggleNotifications()" class="btn-icon" aria-label="Notifications" title="Notifications">
+            <span>🔔</span>
+            <span class="notif-badge" id="notif-badge">0</span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown" style="display: none;">
+            <div class="notif-header">
+              <span class="notif-title">Campus Notifications</span>
+              <button onclick="markAllNotificationsRead()" class="notif-mark-btn">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Injected by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Report Buttons -->
+        <button onclick="openReportModal('lost')" class="btn btn-outline btn-sm">
+          <span>Report Lost</span>
+        </button>
+        <button onclick="openReportModal('found')" class="btn btn-primary btn-sm">
+          <span class="plus-icon">+</span>
+          <span>Report Found</span>
+        </button>
+
+        <!-- Current User Profile Chip -->
+        <div class="auth-user-badge" onclick="openAuthModal()" title="Manage Account">
+          <img id="user-avatar-display" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="User avatar" class="user-avatar-small" />
+          <div class="user-info-text">
+            <span class="user-name-small" id="user-name-display">Arathi R</span>
+            <span class="role-pill" id="user-role-display">Student</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =========================================================================
+         VIEW 1: PUBLIC CAMPUS DIRECTORY & FEED
+         ========================================================================= -->
+    <div id="view-feed" class="app-view">
+      
+      <!-- HERO BANNER -->
+      <section id="home" class="hero-section">
+        <div class="container hero-container">
+          
+          <div class="hero-content">
+            <div class="campus-tag">
+              <span class="pulse-indicator"></span>
+              <span>Official Campus Lost &amp; Found • AJCE</span>
+            </div>
+
+            <h1 class="hero-title">
+              Lost Something on Campus? <br />
+              <span class="gradient-text">Find It Fast, Claim It Safely.</span>
+            </h1>
+
+            <p class="hero-description">
+              A secure, central network connecting students, faculty, and campus security at Amal Jyothi College of Engineering. Report misplaced belongings or surrender found items safely.
+            </p>
+
+            <!-- Real-Time Metrics (Calculated dynamically) -->
+            <div class="stats-row">
+              <div class="stat-box">
+                <span class="stat-number" id="stat-total">0</span>
+                <span class="stat-label">Total Reported</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number" id="stat-reunited">0</span>
+                <span class="stat-label">Reunited &amp; Returned</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number" id="stat-pending">0</span>
+                <span class="stat-label">Awaiting Claim</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Search & Multi-Filter Card -->
+          <div class="hero-search-card">
+            <h2 class="search-card-title">Search Campus Database</h2>
+            <p class="search-card-subtitle">Search by item name, ID number, brand, or campus location</p>
+            
+            <div class="search-inputs-grid">
+              
+              <div class="input-field-group">
+                <label for="search-input">Item Keyword</label>
+                <div class="input-with-icon">
+                  <span class="input-icon">🔍</span>
+                  <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="e.g. Casio Calculator, ID Card, Umbrella, Activa Keys..." 
+                    oninput="handleSearchFilter()"
+                  />
+                </div>
+              </div>
+
+              <div class="search-filters-row">
+                <div class="input-field-group">
+                  <label for="category-select">Category</label>
+                  <select id="category-select" onchange="handleSearchFilter()">
+                    <option value="all">All Categories</option>
+                    <option value="Electronics">Electronics &amp; Gadgets</option>
+                    <option value="ID Cards & Wallets">ID Cards &amp; Wallets</option>
+                    <option value="Books & Notes">Books &amp; Calculators</option>
+                    <option value="Keys & Remotes">Keys &amp; Vehicles</option>
+                    <option value="Bottles & Umbrellas">Bottles &amp; Umbrellas</option>
+                    <option value="Clothing">Clothing &amp; Uniform</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+
+                <div class="input-field-group">
+                  <label for="location-select">Campus Location</label>
+                  <select id="location-select" onchange="handleSearchFilter()">
+                    <option value="all">All Campus Locations</option>
+                    <option value="Central Library">Central Library</option>
+                    <option value="Main Canteen / Cafeteria">Main Canteen / Cafeteria</option>
+                    <option value="CS Dept / St. Joseph Block">CS Dept / St. Joseph Block</option>
+                    <option value="Mechanical / Electrical Labs">Mechanical / Electrical Labs</option>
+                    <option value="Auditorium & Seminar Halls">Auditorium &amp; Seminar Halls</option>
+                    <option value="College Bus Bay">College Bus Bay</option>
+                    <option value="Sports Complex & Ground">Sports Complex &amp; Ground</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="search-btn-row">
+                <button onclick="resetFilters()" class="btn btn-text">Reset Filters</button>
+                <button onclick="document.getElementById('browse').scrollIntoView({ behavior: 'smooth' })" class="btn btn-primary">
+                  <span>View Matching Items</span>
+                  <span>↓</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BROWSE FEED SECTION -->
+      <section id="browse" class="browse-section">
+        <div class="container">
+          
+          <div class="browse-header">
+            <div>
+              <span class="sub-tag">Live Campus Directory</span>
+              <h2 class="browse-title">Reported Campus Belongings</h2>
+            </div>
+
+            <!-- Status Filter Tabs -->
+            <div class="status-tabs" id="status-tabs">
+              <button class="status-tab active" data-status="all" onclick="setStatusTab('all')">
+                <span>All Items</span>
+                <span class="tab-count" id="count-all">0</span>
+              </button>
+              <button class="status-tab" data-status="lost" onclick="setStatusTab('lost')">
+                <span class="dot-indicator dot-lost"></span>
+                <span>Lost (Looking)</span>
+                <span class="tab-count" id="count-lost">0</span>
+              </button>
+              <button class="status-tab" data-status="found" onclick="setStatusTab('found')">
+                <span class="dot-indicator dot-found"></span>
+                <span>Found (At Hub)</span>
+                <span class="tab-count" id="count-found">0</span>
+              </button>
+              <button class="status-tab" data-status="claimed" onclick="setStatusTab('claimed')">
+                <span class="dot-indicator dot-claimed"></span>
+                <span>Reunited</span>
+                <span class="tab-count" id="count-claimed">0</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Filter Badge Indicator -->
+          <div class="active-filter-indicator" id="filter-indicator" style="display: none;">
+            <span id="filter-text">Filtering active</span>
+            <button onclick="resetFilters()" class="clear-filter-btn">✕ Clear Filters</button>
+          </div>
+
+          <!-- Items Grid Container -->
+          <div class="items-grid" id="items-grid">
+            <!-- Injected dynamically via app.js -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="empty-state" style="display: none;">
+            <div class="empty-icon">📦</div>
+            <h3 class="empty-title">No matching campus items found</h3>
+            <p class="empty-desc">Try clearing your search query or submit a report to alert campus security.</p>
+            <button onclick="openReportModal('lost')" class="btn btn-primary btn-sm">Report a Missing Item</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CAMPUS SECURITY HUBS -->
+      <section id="hubs" class="hubs-section">
+        <div class="container">
+          
+          <div class="section-title-wrap">
+            <span class="sub-tag">Designated Safe Drop-offs</span>
+            <h2 class="section-heading">Campus Handover &amp; Verification Hubs</h2>
+            <p class="section-subtext">
+              Turn in found belongings or collect verified claims at any of our campus desks.
+            </p>
+          </div>
+
+          <div class="hubs-grid">
+            
+            <div class="hub-card">
+              <div class="hub-icon-box">🛡️</div>
+              <h3 class="hub-title">Main Gate Security Office</h3>
+              <span class="hub-timing">Open 24/7 • Gate 1 Control</span>
+              <p class="hub-desc">
+                Primary holding vault for electronics, wallets, vehicle keys, and items surrendered after hours.
+              </p>
+              <div class="hub-contact">
+                <span>Security Desk Ext: #104 • 04828 305555</span>
+              </div>
+            </div>
+
+            <div class="hub-card">
+              <div class="hub-icon-box">📚</div>
+              <h3 class="hub-title">Central Library Circulation Desk</h3>
+              <span class="hub-timing">Mon – Sat: 8:30 AM – 6:30 PM</span>
+              <p class="hub-desc">
+                Holds scientific calculators, textbooks, notebooks, student ID cards, and reading glasses.
+              </p>
+              <div class="hub-contact">
+                <span>Library Helpdesk Ext: #210</span>
+              </div>
+            </div>
+
+            <div class="hub-card">
+              <div class="hub-icon-box">💻</div>
+              <h3 class="hub-title">CS Department Office</h3>
+              <span class="hub-timing">St. Joseph Block • 2nd Floor</span>
+              <p class="hub-desc">
+                Belongings left in CS Computer Labs, lecture halls, and department seminar rooms.
+              </p>
+              <div class="hub-contact">
+                <span>CS Coordinator Ext: #342</span>
+              </div>
+            </div>
+
+            <div class="hub-card">
+              <div class="hub-icon-box">☕</div>
+              <h3 class="hub-title">Campus Canteen Help Counter</h3>
+              <span class="hub-timing">Mon – Fri: 9:00 AM – 5:00 PM</span>
+              <p class="hub-desc">
+                Water bottles, lunch bags, umbrellas, and accessories found in the dining halls.
+              </p>
+              <div class="hub-contact">
+                <span>Canteen Supervisor Counter</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VERIFICATION FAQ & RULES -->
+      <section id="faq" class="faq-section">
+        <div class="container faq-container">
+          
+          <div class="section-title-wrap">
+            <span class="sub-tag">Anti-Fraud Safeguards</span>
+            <h2 class="section-heading">Ownership Verification Guidelines</h2>
+          </div>
+
+          <div class="accordion">
+            
+            <div class="accordion-item open">
+              <button class="accordion-trigger" onclick="toggleFaq(this)">
+                <span>How are false claims prevented?</span>
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>
+                  Claimants must submit private proof that only the real owner would know—such as lock screen wallpaper, specific sticker placements, serial numbers, or unique scratches. Evidence is reviewed privately by Campus Security before approval.
+                </p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" onclick="toggleFaq(this)">
+                <span>Is my personal information displayed publicly?</span>
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>
+                  No. Student ID numbers, phone numbers, and ownership receipts are never shown publicly. Only authorized college administrators have access to verify claim evidence.
+                </p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" onclick="toggleFaq(this)">
+                <span>Where do I collect an approved claim?</span>
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>
+                  Once approved, your dashboard displays the designated hub (e.g. Central Library Counter 2 or Main Gate Security). Bring your physical College ID card for final sign-off.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- =========================================================================
+         VIEW 2: USER DASHBOARD (STUDENT & STAFF)
+         ========================================================================= -->
+    <div id="view-user-dashboard" class="app-view" style="display: none;">
+      <section class="dashboard-section">
+        <div class="container">
+          
+          <div class="dashboard-header">
+            <div>
+              <span class="sub-tag">Student &amp; Staff Portal</span>
+              <h1 class="dashboard-title">My Campus Activity</h1>
+              <p class="dashboard-subtext">Manage your reported lost items, found belongings, and track claim verifications.</p>
+            </div>
+            
+            <div class="dashboard-actions">
+              <button onclick="openReportModal('lost')" class="btn btn-outline btn-sm">Report Lost</button>
+              <button onclick="openReportModal('found')" class="btn btn-primary btn-sm">+ Report Found</button>
+            </div>
+          </div>
+
+          <!-- Dashboard Tabs -->
+          <div class="dashboard-tabs">
+            <button onclick="switchUserDashTab('reports')" class="dash-tab active" id="tab-btn-reports">
+              <span>My Reported Items</span>
+              <span class="badge-count" id="user-reports-count">0</span>
+            </button>
+            <button onclick="switchUserDashTab('claims')" class="dash-tab" id="tab-btn-claims">
+              <span>My Ownership Claims</span>
+              <span class="badge-count" id="user-claims-count">0</span>
+            </button>
+          </div>
+
+          <!-- Tab Content 1: My Reported Items -->
+          <div id="dash-content-reports" class="dash-tab-pane">
+            <div class="items-grid" id="user-reports-grid">
+              <!-- Injected by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Tab Content 2: My Ownership Claims -->
+          <div id="dash-content-claims" class="dash-tab-pane" style="display: none;">
+            <div class="claims-list-wrapper" id="user-claims-list">
+              <!-- Injected by JavaScript -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         VIEW 3: ADMIN SECURITY CONSOLE (RESTRICTED ROLE)
+         ========================================================================= -->
+    <div id="view-admin-dashboard" class="app-view" style="display: none;">
+      <section class="dashboard-section admin-section">
+        <div class="container">
+          
+          <div class="dashboard-header">
+            <div>
+              <span class="admin-shield-tag">🛡️ Campus Security Officer Console</span>
+              <h1 class="dashboard-title">Lost &amp; Found Administration</h1>
+              <p class="dashboard-subtext">Review private ownership claims, approve listings, and record item collections for Amal Jyothi College.</p>
+            </div>
+            
+            <div class="admin-badge-status">
+              <span class="pulse-indicator"></span>
+              <span>Logged in as Security Administrator</span>
+            </div>
+          </div>
+
+          <!-- Admin Metric Cards -->
+          <div class="admin-metrics-grid">
+            <div class="admin-stat-card">
+              <span class="stat-num" id="admin-stat-pending-claims">0</span>
+              <span class="stat-lbl">Pending Claims to Verify</span>
+            </div>
+            <div class="admin-stat-card">
+              <span class="stat-num" id="admin-stat-total-items">0</span>
+              <span class="stat-lbl">Total Cataloged Items</span>
+            </div>
+            <div class="admin-stat-card">
+              <span class="stat-num" id="admin-stat-returned">0</span>
+              <span class="stat-lbl">Successfully Returned</span>
+            </div>
+          </div>
+
+          <!-- Admin Claims Verification Desk -->
+          <div class="admin-table-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Pending Ownership Claims (Private Evidence Review)</h3>
+              <span class="panel-note">Strictly confidential • Never disclosed publicly</span>
+            </div>
+
+            <div class="admin-claims-container" id="admin-claims-container">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Admin All Items Catalog Table -->
+          <div class="admin-table-panel" style="margin-top: 2.5rem;">
+            <div class="panel-header">
+              <h3 class="panel-title">Campus Items Management</h3>
+              <span class="panel-note">Update status, mark returned, or remove entries</span>
+            </div>
+
+            <div class="admin-items-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Type</th>
+                    <th>Location Found/Lost</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-items-tbody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: REPORT LOST OR FOUND ITEM
+       ========================================================================= -->
+  <div id="report-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="report-modal-title">Report an Item</h3>
+          <p class="modal-subtitle">Logged under your verified college profile</p>
+        </div>
+        <button onclick="closeReportModal()" class="modal-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <form id="report-form" onsubmit="handleReportSubmit(event)">
+        
+        <!-- Toggle: Lost vs Found -->
+        <div class="form-group">
+          <label class="form-label">Report Category <span class="required">*</span></label>
+          <div class="type-toggle-group">
+            <label class="type-toggle-label">
+              <input type="radio" name="reportType" value="lost" id="type-lost" checked onchange="updateReportTypeUI()" />
+              <span class="toggle-pill pill-lost">🔴 I Lost Something</span>
+            </label>
+            <label class="type-toggle-label">
+              <input type="radio" name="reportType" value="found" id="type-found" onchange="updateReportTypeUI()" />
+              <span class="toggle-pill pill-found">🟢 I Found Something</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-title" class="form-label">Item Title <span class="required">*</span></label>
+            <input type="text" id="item-title" required placeholder="e.g. Casio fx-991EX Calculator, AJCE Blue Lanyard" />
+          </div>
+
+          <div class="form-group">
+            <label for="item-category" class="form-label">Category <span class="required">*</span></label>
+            <select id="item-category" required>
+              <option value="ID Cards & Wallets">ID Cards &amp; Wallets</option>
+              <option value="Electronics">Electronics &amp; Gadgets</option>
+              <option value="Books & Notes">Books &amp; Calculators</option>
+              <option value="Keys & Remotes">Keys &amp; Vehicles</option>
+              <option value="Bottles & Umbrellas">Bottles &amp; Umbrellas</option>
+              <option value="Clothing">Clothing &amp; Uniform</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-location" class="form-label">Campus Location <span class="required">*</span></label>
+            <select id="item-location" required>
+              <option value="Central Library">Central Library</option>
+              <option value="Main Canteen / Cafeteria">Main Canteen / Cafeteria</option>
+              <option value="CS Dept / St. Joseph Block">CS Dept / St. Joseph Block</option>
+              <option value="Mechanical / Electrical Labs">Mechanical / Electrical Labs</option>
+              <option value="Auditorium & Seminar Halls">Auditorium &amp; Seminar Halls</option>
+              <option value="College Bus Bay">College Bus Bay</option>
+              <option value="Sports Complex & Ground">Sports Complex &amp; Ground</option>
+              <option value="Other Campus Area">Other Campus Area</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="item-date" class="form-label">Date <span class="required">*</span></label>
+            <input type="date" id="item-date" required />
+          </div>
+        </div>
+
+        <!-- Optional storage location (if found) -->
+        <div class="form-group" id="storage-location-field" style="display: none;">
+          <label for="item-storage" class="form-label">Current Storage Location / Surrendered At</label>
+          <input type="text" id="item-storage" placeholder="e.g. Deposited at Library Desk #2, or with Officer at Gate 1" />
+        </div>
+
+        <div class="form-group">
+          <label for="item-desc" class="form-label">Detailed Description <span class="required">*</span></label>
+          <textarea id="item-desc" rows="3" required placeholder="Color, brand, key features, stickers, or condition..."></textarea>
+        </div>
+
+        <!-- Photograph upload (Working file upload with live preview) -->
+        <div class="form-group">
+          <label class="form-label">Upload Item Photograph (Optional)</label>
+          <div class="file-upload-box" onclick="document.getElementById('item-photo-file').click()">
+            <input type="file" id="item-photo-file" accept="image/*" style="display: none;" onchange="handleImagePreview(event)" />
+            <div id="upload-prompt">
+              <span class="upload-icon">📷</span>
+              <span class="upload-text">Click to choose image from your computer</span>
+            </div>
+            <div id="upload-preview-wrap" style="display: none;">
+              <img id="upload-preview-img" src="" alt="Preview" class="preview-thumbnail" />
+              <button type="button" onclick="clearUploadedImage(event)" class="clear-img-btn">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" onclick="closeReportModal()" class="btn btn-text">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-report">
+            <span>Publish Report</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: PRIVATE OWNERSHIP VERIFICATION CLAIM
+       ========================================================================= -->
+  <div id="claim-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Ownership Verification</h3>
+          <p class="modal-subtitle">Submitted privately to Campus Security Desk</p>
+        </div>
+        <button onclick="closeClaimModal()" class="modal-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Item Preview Card -->
+      <div class="claim-item-summary" id="claim-item-summary">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <form id="claim-form" onsubmit="handleClaimSubmit(event)">
+        
+        <input type="hidden" id="claim-item-id" />
+
+        <div class="form-group">
+          <label for="claim-proof" class="form-label">
+            Describe Unique Identifying Evidence <span class="required">*</span>
+          </label>
+          <p class="helper-text">
+            Provide details not obvious in the public photo (e.g., sticker patterns, lock screen wallpaper, specific scratches, contents inside, or engraved initials).
+          </p>
+          <textarea id="claim-proof" rows="4" required placeholder="Describe specific details that verify you are the genuine owner of this item..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="claim-date-lost" class="form-label">Approximate Date Lost <span class="required">*</span></label>
+            <input type="date" id="claim-date-lost" required />
+          </div>
+
+          <div class="form-group">
+            <label for="claim-location-lost" class="form-label">Approximate Location Lost <span class="required">*</span></label>
+            <input type="text" id="claim-location-lost" required placeholder="e.g. Near Library Desk 12" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="claim-phone" class="form-label">Your Contact Phone / WhatsApp (Private) <span class="required">*</span></label>
+          <input type="tel" id="claim-phone" required placeholder="+91 98471 ..." />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" onclick="closeClaimModal()" class="btn btn-text">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-claim">
+            <span>Submit Verification Claim</span>
+            <span>🔒</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: ADMIN PRIVATE EVIDENCE REVIEW & APPROVAL
+       ========================================================================= -->
+  <div id="admin-review-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card modal-lg">
+      
+      <div class="modal-header">
+        <div>
+          <span class="admin-badge-tag">Confidential Security Review</span>
+          <h3 class="modal-title" id="admin-modal-title">Review Ownership Claim</h3>
+          <p class="modal-subtitle">Verify claimant testimony against physical item in custody</p>
+        </div>
+        <button onclick="closeAdminReviewModal()" class="modal-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="admin-review-content" id="admin-review-content">
+        <!-- Injected via JavaScript -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 4: USER AUTHENTICATION / REGISTRATION
+       ========================================================================= -->
+  <div id="auth-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card modal-auth">
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Campus Authentication</h3>
+          <p class="modal-subtitle">Amal Jyothi College of Engineering Single Sign-On</p>
+        </div>
+        <button onclick="closeAuthModal()" class="modal-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group">
+          <label for="auth-email" class="form-label">College Email ID <span class="required">*</span></label>
+          <input type="email" id="auth-email" required placeholder="e.g. yourname@amaljyothi.ac.in" />
+          <p class="helper-text">Must be an @amaljyothi.ac.in or @ajce.in address</p>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-role" class="form-label">Role</label>
+          <select id="auth-role">
+            <option value="student">Student</option>
+            <option value="staff">Faculty / Staff</option>
+            <option value="admin">Campus Security Administrator</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" onclick="closeAuthModal()" class="btn btn-text">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <span>Sign In to CampusFind</span>
+            <span>→</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      
+      <div class="footer-col">
+        <div class="footer-logo">
+          <span class="logo-icon">🔍</span>
+          <span class="logo-title">Campus<span class="highlight">Find</span></span>
+        </div>
+        <p class="footer-tagline">
+          Official Lost and Found network for students, staff, and faculty of Amal Jyothi College of Engineering.
+        </p>
+        <span class="badge-campus">Koovappally, Kanjirappally, Kerala</span>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Emergency Security</h4>
+        <ul class="footer-links">
+          <li><span>Main Security Control: Ext. 104 • 04828 305555</span></li>
+          <li><span>Central Library Helpdesk: Ext. 210</span></li>
+          <li><span>CS Department Office: St. Joseph Block</span></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Portal Links</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="openReportModal('lost')">Report Lost Belonging</a></li>
+          <li><a href="javascript:void(0)" onclick="openReportModal('found')">Report Found Belonging</a></li>
+          <li><a href="javascript:void(0)" onclick="showView('user-dashboard')">My Submissions &amp; Claims</a></li>
+          <li><a href="#hubs">Campus Collection Hubs</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 CampusFind • Amal Jyothi College of Engineering. All rights reserved.</p>
+        <a href="#home" class="back-to-top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

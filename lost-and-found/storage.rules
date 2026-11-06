@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.role == 'admin' || 
+         firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    // Public Item Photographs (e.g. photos of found keys, bottles, calculators)
+    match /items/{itemId}/{allImages=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+    }
+
+    // STRICTLY PRIVATE Ownership Evidence (e.g. purchase receipts, serial barcodes, lock screens)
+    // ONLY the user who uploaded the proof or campus administrators can view!
+    match /evidence/{claimId}/{fileName} {
+      allow read: if isAdmin() || (isAuthenticated() && request.auth.uid == resource.metadata.ownerUid);
+      allow write: if isAuthenticated() && 
+                      request.resource.size < 10 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*|application/pdf');
+    }
+
+  }
+}
+

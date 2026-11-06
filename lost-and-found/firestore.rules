@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isCollegeMember() {
+      return isAuthenticated() && 
+        (request.auth.token.email.matches('.*@amaljyothi[.]ac[.]in') || 
+         request.auth.token.email.matches('.*@ajce[.]in'));
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.role == 'admin' || 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 1. Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // 2. Items collection (Lost and Found public directory)
+    match /items/{itemId} {
+      // Anyone on campus can view approved or returned items
+      allow read: if resource.data.status in ['approved', 'returned'] || 
+                     isOwner(resource.data.reporterUid) || 
+                     isAdmin();
+
+      // Only registered college students/staff can report items
+      allow create: if isCollegeMember() && 
+                       request.resource.data.reporterUid == request.auth.uid;
+
+      // Only the reporter can edit their pending report, or admin can update status
+      allow update: if (isOwner(resource.data.reporterUid) && resource.data.status == 'pending') || 
+                       isAdmin();
+
+      // Only admin can delete reports
+      allow delete: if isAdmin();
+    }
+
+    // 3. Claims collection (CRITICAL: Ownership Verification Privacy)
+    match /claims/{claimId} {
+      // STRICT PRIVACY: Only the claimant or authorized campus administrator can read claim evidence!
+      // NEVER allow public reading of ownership proofs, receipts, or serial numbers.
+      allow read: if isOwner(resource.data.claimantUid) || isAdmin();
+
+      // Authenticated students can submit a claim for an item
+      allow create: if isCollegeMember() && 
+                       request.resource.data.claimantUid == request.auth.uid &&
+                       request.resource.data.status == 'pending';
+
+      // Only Admin can approve, reject, or resolve claims
+      allow update: if isAdmin();
+
+      allow delete: if isAdmin();
+    }
+
+    // 4. Notifications collection
+    match /notifications/{notificationId} {
+      allow read: if isOwner(resource.data.recipientUid);
+      allow update: if isOwner(resource.data.recipientUid);
+      allow create: if isAdmin();
+      allow delete: if isOwner(resource.data.recipientUid) || isAdmin();
+    }
+
+  }
+}
+
